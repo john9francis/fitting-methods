@@ -13,8 +13,7 @@ class GridSearch():
 
     # since these are pretty good guesses, we will
     # have a small step size
-    self.d_a = 1
-    self.d_a2 = 1
+    self.step = .01
 
     self.x_data = np.array([i for i in range(50, 241, 10)])
     self.y_data = np.array([
@@ -22,6 +21,7 @@ class GridSearch():
       13, 42, 90, 75, 29, 13, 8, 4, 6, 3
     ])
 
+    self.current_chi_2 = 100
     self.desired_chi_2 = 1
     self.error_chi_2 = .5
 
@@ -53,6 +53,64 @@ class GridSearch():
       chi_squared += (yi - y_func_i)**2 / yi
 
     return chi_squared
+  
+
+  def minimize_chi_squared(self):
+    '''
+    Goes through all the parameters and finds the
+    best combination to get an extremely low chi-squared
+    '''
+    chi_squared = 100
+    self.find_optimal_param_value("a1", self.a1)
+    self.find_optimal_param_value("a2", self.a2)
+    self.find_optimal_param_value("mu1", self.mu1)
+    self.find_optimal_param_value("mu2", self.mu2)
+    self.find_optimal_param_value("gamma1", self.gamma1)
+    self.find_optimal_param_value("gamma2", self.gamma2)
+
+    
+  def find_optimal_param_value(self, parameter_name: str, initial_guess: float):
+    '''
+    Takes in an initial guess and name of a parameter: e.g.
+    "a1" "a2" "mu1" "mu2" "gamma1" "gamma2"
+    and finds the optimal value to minimize chi-squared
+    '''
+
+    switched_direction = False
+
+    param = initial_guess
+    step = self.step
+
+    while True:
+      if parameter_name == "a1":
+        self.a1 = param
+      if parameter_name == "a2":
+        self.a2 = param
+      if parameter_name == "mu1":
+        self.mu1 = param
+      if parameter_name == "mu2":
+        self.mu2 = param
+      if parameter_name == "gamma1":
+        self.gamma1 = param
+      if parameter_name == "gamma2":
+        self.gamma2 = param
+
+      param += step
+
+      new_chi_sq = self.calc_chi_squared()
+      if new_chi_sq < self.current_chi_2:
+        self.current_chi_2 = new_chi_sq
+      elif not switched_direction:
+        step = - step
+        print("switching direction")
+        switched_direction = True
+      else:
+        break
+    
+    print(f"The optimal value of {parameter_name} is {param} with a chi squared value of: {self.current_chi_2}")
+    return param
+      
+
 
 
   ################################
