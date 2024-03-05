@@ -1,5 +1,6 @@
 # Class that performs grid search to find the minimum parameters
 import numpy as np
+from matplotlib import pyplot as plt
 
 class GridSearch():
   def __init__(self) -> None:
@@ -7,8 +8,8 @@ class GridSearch():
     self.mu2 = 177.9
     self.gamma1 = 30
     self.gamma2 = 20
-    self.a1 = 6000
-    self.a2 = 60000
+    self.a1 = 6482
+    self.a2 = 58105
 
     # since these are pretty good guesses, we will
     # have a small step size
@@ -54,10 +55,18 @@ class GridSearch():
 
 
 
+  def plot_data_and_fit(self):
+    plt.plot(self.x_data, self.y_data, label="Data")
+    #plt.plot(self.x_data, self.fit_function(self.x_data), label="fit")
+    plt.legend()
+    plt.show()
+    pass
+
 
 
 if __name__ == "__main__":
   grid_search = GridSearch()
   chi_2 = grid_search.calc_chi_squared()
+  grid_search.plot_data_and_fit()
 
   print(chi_2)
