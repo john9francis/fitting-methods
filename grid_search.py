@@ -64,23 +64,31 @@ class GridSearch():
 
 
   def plot_chisq_for_varying_a1(self):
-    a1_vals = np.linspace(1000, 3000, 10)
+    # save a1 to reset later
+    save_a1 = self.a1
+
+    a1_vals = np.linspace(1000, 3000, 200)
     chi_sq = []
     for a1 in a1_vals:
       self.a1 = a1
       chi_sq.append(self.calc_chi_squared())
 
-    plt.plot(a1_vals, chi_2)
+    plt.plot(a1_vals, chi_sq)
     plt.xlabel("a1 values")
     plt.ylabel("Chi squared")
     plt.show()
 
+    # reset a1
+    self.a1 = save_a1
+
+
+
+def main():
+  grid_search = GridSearch()
+  chi_2 = grid_search.calc_chi_squared()
+  #grid_search.plot_data_and_fit()
+  grid_search.plot_chisq_for_varying_a1()
 
 
 if __name__ == "__main__":
-  grid_search = GridSearch()
-  chi_2 = grid_search.calc_chi_squared()
-  grid_search.plot_data_and_fit()
-  #grid_search.plot_chisq_for_varying_a1()
-
-  print(chi_2)
+  main()
