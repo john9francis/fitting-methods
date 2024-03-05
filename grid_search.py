@@ -8,8 +8,8 @@ class GridSearch():
     self.mu2 = 177.9
     self.gamma1 = 30
     self.gamma2 = 20
-    self.a1 = 6482
-    self.a2 = 58105
+    self.a1 = 1826
+    self.a2 = 2812
 
     # since these are pretty good guesses, we will
     # have a small step size
@@ -32,7 +32,7 @@ class GridSearch():
       '''Lorentzian distribution'''
       return (gamma/2) / (np.pi * ((xi - mu) ** 2 + (gamma / 2) ** 2))
     
-    return self.a1 * L(self.mu1, self.gamma1) + self.a2 * L(self.mu1, self.gamma1)
+    return self.a1 * L(self.mu1, self.gamma1) + self.a2 * L(self.mu2, self.gamma2)
   
   def calc_chi_squared(self) -> float:
     '''
@@ -57,10 +57,23 @@ class GridSearch():
 
   def plot_data_and_fit(self):
     plt.plot(self.x_data, self.y_data, label="Data")
-    #plt.plot(self.x_data, self.fit_function(self.x_data), label="fit")
+    plt.plot(self.x_data, self.fit_function(self.x_data), label="fit")
     plt.legend()
     plt.show()
     pass
+
+
+  def plot_chisq_for_varying_a1(self):
+    a1_vals = np.linspace(1000, 3000, 10)
+    chi_sq = []
+    for a1 in a1_vals:
+      self.a1 = a1
+      chi_sq.append(self.calc_chi_squared())
+
+    plt.plot(a1_vals, chi_2)
+    plt.xlabel("a1 values")
+    plt.ylabel("Chi squared")
+    plt.show()
 
 
 
@@ -68,5 +81,6 @@ if __name__ == "__main__":
   grid_search = GridSearch()
   chi_2 = grid_search.calc_chi_squared()
   grid_search.plot_data_and_fit()
+  #grid_search.plot_chisq_for_varying_a1()
 
   print(chi_2)
