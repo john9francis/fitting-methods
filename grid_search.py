@@ -82,13 +82,23 @@ class GridSearch():
     self.a1 = save_a1
 
 
+  def plot_chisq_for_varying_mu1(self):
+    # save mu1 to reset later
+    save_mu1 = self.mu1
 
-def main():
-  grid_search = GridSearch()
-  chi_2 = grid_search.calc_chi_squared()
-  #grid_search.plot_data_and_fit()
-  grid_search.plot_chisq_for_varying_a1()
+    mu1_vals = np.linspace(0, 200, 200)
+    chi_sq = []
+    for mu1 in mu1_vals:
+      self.mu1 = mu1
+      chi_sq.append(self.calc_chi_squared())
+
+    plt.plot(mu1_vals, chi_sq)
+    plt.xlabel("mu1 values")
+    plt.ylabel("Chi squared")
+    plt.show()
+
+    # reset mu1
+    self.mu1 = save_mu1
 
 
-if __name__ == "__main__":
-  main()
+
