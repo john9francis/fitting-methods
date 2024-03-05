@@ -2,6 +2,25 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+###########################################################
+# A FEW NOTES ON THIS:
+# NOTE: i want the reduced chi squared to be 
+# close to 1. In other words, chi squared divided by
+# the degrees of freedom, which equals the number of
+# data points minus the number of parameters. in my case, 
+# 20 - 6 = 14.
+#
+# NOTE: If my chi-squared is STILL not great, I may be 
+# Stuck in a local minimum. I may consider graphing
+# to see what my initial guess should be first.
+#
+# NOTE: Also, I havent quite finished the chi squared 
+# calculation in the "self.minimize_chi_squared" function.
+# to truly finish, I need to fit the 3 points to a parabola. 
+###########################################################
+
+
+
 class GridSearch():
   def __init__(self, mu1, mu2, gamma1, gamma2, a1, a2) -> None:
     self.mu1 = mu1
