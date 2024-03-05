@@ -1,7 +1,18 @@
 from grid_search import GridSearch
 
 def main():
-  grid_search = GridSearch()
+  # set initial guesses:
+  mu1 = 102.1
+  mu2 = 177.9
+  gamma1 = 30
+  gamma2 = 20
+  a1 = 1826
+  a2 = 2812  
+
+  mu_gamma_a_list = [mu1, mu2, gamma1, gamma2, a1, a2]
+
+  grid_search = GridSearch(*mu_gamma_a_list)
+
   chi_2 = grid_search.calc_chi_squared()
   #grid_search.plot_data_and_fit()
   #grid_search.plot_chisq_for_varying_a1()

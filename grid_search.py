@@ -3,17 +3,17 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class GridSearch():
-  def __init__(self) -> None:
-    self.mu1 = 102.1
-    self.mu2 = 177.9
-    self.gamma1 = 30
-    self.gamma2 = 20
-    self.a1 = 1826
-    self.a2 = 2812
+  def __init__(self, mu1, mu2, gamma1, gamma2, a1, a2) -> None:
+    self.mu1 = mu1
+    self.mu2 = mu2
+    self.gamma1 = gamma1
+    self.gamma2 = gamma2
+    self.a1 = a1
+    self.a2 = a2
 
     # since these are pretty good guesses, we will
     # have a small step size
-    self.d_a1 = 1
+    self.d_a = 1
     self.d_a2 = 1
 
     self.x_data = np.array([i for i in range(50, 241, 10)])
@@ -34,6 +34,7 @@ class GridSearch():
     
     return self.a1 * L(self.mu1, self.gamma1) + self.a2 * L(self.mu2, self.gamma2)
   
+
   def calc_chi_squared(self) -> float:
     '''
     Returns a value of the chi squared test
@@ -54,6 +55,9 @@ class GridSearch():
     return chi_squared
 
 
+  ################################
+  # PLOTS
+  ################################
 
   def plot_data_and_fit(self):
     plt.plot(self.x_data, self.y_data, label="Data")
