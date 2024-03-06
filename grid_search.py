@@ -22,7 +22,7 @@ class GridSearch():
     self.a1 = a1
     self.a2 = a2
 
-    self.step = .001
+    self.step = .01
 
     self.x_data = np.array([i for i in range(50, 241, 10)])
     self.y_data = np.array([
@@ -77,11 +77,11 @@ class GridSearch():
     best combination to get an extremely low chi-squared
     '''
     self.find_optimal_param_value("a1", self.a1)
-    self.find_optimal_param_value("a2", self.a2)
-    self.find_optimal_param_value("mu1", self.mu1)
-    self.find_optimal_param_value("mu2", self.mu2)
-    self.find_optimal_param_value("gamma1", self.gamma1)
-    self.find_optimal_param_value("gamma2", self.gamma2)
+    #self.find_optimal_param_value("a2", self.a2)
+    #self.find_optimal_param_value("mu1", self.mu1)
+    #self.find_optimal_param_value("mu2", self.mu2)
+    #self.find_optimal_param_value("gamma1", self.gamma1)
+    #self.find_optimal_param_value("gamma2", self.gamma2)
 
     
   def find_optimal_param_value(self, parameter_name: str, initial_guess: float):
@@ -95,45 +95,45 @@ class GridSearch():
     step = self.step
 
     # initialize our before and after chi_squared variables
-    old_chi_sq = 0
-    new_chi_sq = 0
+    old_chi_sq = None
+    new_chi_sq = None
 
-    old_param = 0
-    new_param = 0
+    old_param = None
+    new_param = None
 
     while True:
+      # set which parameter we are changing
       if parameter_name == "a1":
-        old_param = self.a1
+        old_param = self.a1 - step
         self.a1 = param
       if parameter_name == "a2":
-        old_param = self.a2
+        old_param = self.a2 - step
         self.a2 = param
       if parameter_name == "mu1":
-        old_param = self.mu1
+        old_param = self.mu1 - step
         self.mu1 = param
       if parameter_name == "mu2":
-        old_param = self.mu2
+        old_param = self.mu2 - step
         self.mu2 = param
       if parameter_name == "gamma1":
-        old_param = self.gamma1
+        old_param = self.gamma1 - step
         self.gamma1 = param
       if parameter_name == "gamma2":
-        old_param = self.gamma2
+        old_param = self.gamma2 - step
         self.gamma2 = param
 
-      param += step
-      new_param = param
+      new_param = param + step
 
       new_chi_sq = self.calc_chi_squared()
 
       if new_chi_sq < self.current_chi_2:
         old_chi_sq = self.current_chi_2
         self.current_chi_2 = new_chi_sq
+        param = new_param
 
-      #elif not switched_direction:
-      #  step = - step
-      #  print("switching direction")
-      #  switched_direction = True
+      elif old_param == None and new_param == None and old_chi_sq == None and new_chi_sq == None:
+        # Make sure that these all have values. 
+        pass
 
       else:
         break
@@ -158,7 +158,7 @@ class GridSearch():
 
     # first, sort from smallest x to largest
     tuples = sorted([point1, point2, point3])
-
+    print(tuples)
     x1, y1 = tuples[0]
     x2, y2 = tuples[1]
     x3, y3 = tuples[2]
@@ -166,7 +166,9 @@ class GridSearch():
     matrix = sp.Matrix([
       [x1**2, x1, 1, y1],
       [x2**2, x2, 1, y2],
-      [x3**2, x3, 1, y3]]).rref()
+      [x3**2, x3, 1, y3]])
+    print(matrix)
+    matrix = matrix.rref()
     print(matrix)
     
 
