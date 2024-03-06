@@ -1,18 +1,10 @@
 # Class that performs grid search to find the minimum parameters
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy import optimize as sc_op
 
 ###########################################################
 # A FEW NOTES ON THIS:
-# NOTE: i want the reduced chi squared to be 
-# close to 1. In other words, chi squared divided by
-# the degrees of freedom, which equals the number of
-# data points minus the number of parameters. in my case, 
-# 20 - 6 = 14.
-#
-# NOTE: If my chi-squared is STILL not great, I may be 
-# Stuck in a local minimum. I may consider graphing
-# to see what my initial guess should be first.
 #
 # NOTE: Also, I havent quite finished the chi squared 
 # calculation in the "self.minimize_chi_squared" function.
@@ -71,7 +63,14 @@ class GridSearch():
       # then sigma squared is just yi
       chi_squared += (yi - y_func_i)**2 / yi
 
-    return chi_squared
+    return chi_squared # to get reduced chi squared
+  
+
+  def get_reduced_chi_sq(self):
+    '''
+    This system returns chi2/degrees of freedom (14)
+    '''
+    return self.current_chi_2 / 14
   
 
   def minimize_chi_squared(self):
@@ -79,7 +78,6 @@ class GridSearch():
     Goes through all the parameters and finds the
     best combination to get an extremely low chi-squared
     '''
-    chi_squared = 100
     self.find_optimal_param_value("a1", self.a1)
     self.find_optimal_param_value("a2", self.a2)
     self.find_optimal_param_value("mu1", self.mu1)
@@ -100,36 +98,84 @@ class GridSearch():
     param = initial_guess
     step = self.step
 
+    # initialize our before and after chi_squared variables
+    old_chi_sq = 0
+    new_chi_sq = 0
+
+    old_param = 0
+    new_param = 0
+
     while True:
       if parameter_name == "a1":
+        old_param = self.a1
         self.a1 = param
       if parameter_name == "a2":
+        old_param = self.a2
         self.a2 = param
       if parameter_name == "mu1":
+        old_param = self.mu1
         self.mu1 = param
       if parameter_name == "mu2":
+        old_param = self.mu2
         self.mu2 = param
       if parameter_name == "gamma1":
+        old_param = self.gamma1
         self.gamma1 = param
       if parameter_name == "gamma2":
+        old_param = self.gamma2
         self.gamma2 = param
 
       param += step
+      new_param = param
 
       new_chi_sq = self.calc_chi_squared()
+
       if new_chi_sq < self.current_chi_2:
+        old_chi_sq = self.current_chi_2
         self.current_chi_2 = new_chi_sq
+
       elif not switched_direction:
         step = - step
         print("switching direction")
         switched_direction = True
+
       else:
         break
+
+    # after the loop is done, we use the 3 points:
+    # old, current, and new chi squareds, and
+    # fit them to a parabola, then find the minimum.
+      
+    #param, self.current_chi_2 = self.find_min_of_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
     
     print(f"The optimal value of {parameter_name} is {param} with a chi squared value of: {self.current_chi_2}")
-    return param
       
 
+
+  def find_min_of_parabola(self, point1:tuple, point2:tuple, point3:tuple) -> tuple:
+    '''Takes in 3 points, fits them to a parabola, and finds
+    The minimum of that parabola.'''
+    # Unpack points
+    x1, y1 = point1
+    x2, y2 = point2
+    x3, y3 = point3
+
+    # Define the parabola equation: ax^2 + bx + c
+    parabola_eq = lambda x, a, b, c: a * x**2 + b * x + c
+
+    # Initial guess for parameters
+    initial_guess = [0, 0, 0]
+
+    # Fit the parabola to the given points
+    params = sc_op.minimize(
+      lambda params: 
+      sum((parabola_eq(x, *params) - y)**2 
+          for x, y in [point1, point2, point3]), initial_guess).x
+    
+    # Minimum of the parabola occurs at x = -b/(2a)
+    min_x = -params[1] / (2 * params[0])
+    min_y = parabola_eq(min_x, *params)
+    return min_x, min_y
 
 
   ################################
