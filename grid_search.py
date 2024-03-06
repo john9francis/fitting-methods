@@ -78,10 +78,10 @@ class GridSearch():
     '''
     self.find_optimal_param_value("a1", self.a1)
     self.find_optimal_param_value("a2", self.a2)
-    #self.find_optimal_param_value("mu1", self.mu1)
-    #self.find_optimal_param_value("mu2", self.mu2)
-    #self.find_optimal_param_value("gamma1", self.gamma1)
-    #self.find_optimal_param_value("gamma2", self.gamma2)
+    self.find_optimal_param_value("mu1", self.mu1)
+    self.find_optimal_param_value("mu2", self.mu2)
+    self.find_optimal_param_value("gamma1", self.gamma1)
+    self.find_optimal_param_value("gamma2", self.gamma2)
 
     
   def find_optimal_param_value(self, parameter_name: str, initial_guess: float):
@@ -91,7 +91,7 @@ class GridSearch():
     and finds the optimal value to minimize chi-squared
     '''
 
-    param = initial_guess - 1
+    param = initial_guess - 3
     step = self.step
 
     # initialize our before and after chi_squared variables
