@@ -1,7 +1,7 @@
 # Class that performs grid search to find the minimum parameters
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy import optimize as sc_op
+import sympy as sp
 
 ###########################################################
 # A FEW NOTES ON THIS:
@@ -22,9 +22,7 @@ class GridSearch():
     self.a1 = a1
     self.a2 = a2
 
-    # since these are pretty good guesses, we will
-    # have a small step size
-    self.step = .01
+    self.step = .001
 
     self.x_data = np.array([i for i in range(50, 241, 10)])
     self.y_data = np.array([
@@ -93,9 +91,7 @@ class GridSearch():
     and finds the optimal value to minimize chi-squared
     '''
 
-    switched_direction = False
-
-    param = initial_guess
+    param = initial_guess - 1
     step = self.step
 
     # initialize our before and after chi_squared variables
@@ -134,10 +130,10 @@ class GridSearch():
         old_chi_sq = self.current_chi_2
         self.current_chi_2 = new_chi_sq
 
-      elif not switched_direction:
-        step = - step
-        print("switching direction")
-        switched_direction = True
+      #elif not switched_direction:
+      #  step = - step
+      #  print("switching direction")
+      #  switched_direction = True
 
       else:
         break
@@ -147,35 +143,34 @@ class GridSearch():
     # fit them to a parabola, then find the minimum.
       
     #param, self.current_chi_2 = self.find_min_of_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
-    
+    self.fit_points_to_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
+
     print(f"The optimal value of {parameter_name} is {param} with a chi squared value of: {self.current_chi_2}")
       
 
+  def fit_points_to_parabola(self, point1:tuple, point2:tuple, point3:tuple) -> tuple:
+    '''Takes in 3 points (x,y) and fits them to a parabola.
+    returns the parameters of an ax^2+bx+c parabola (a,b,c)'''
+    # Step 1: put the points into a matrix of the form:
+    # x1^2  x1  1  |  y1
+    # x2^2  x2  1  |  y2
+    # x3^2  x3  1  |  y3
 
-  def find_min_of_parabola(self, point1:tuple, point2:tuple, point3:tuple) -> tuple:
-    '''Takes in 3 points, fits them to a parabola, and finds
-    The minimum of that parabola.'''
-    # Unpack points
-    x1, y1 = point1
-    x2, y2 = point2
-    x3, y3 = point3
+    # first, sort from smallest x to largest
+    tuples = sorted([point1, point2, point3])
 
-    # Define the parabola equation: ax^2 + bx + c
-    parabola_eq = lambda x, a, b, c: a * x**2 + b * x + c
+    x1, y1 = tuples[0]
+    x2, y2 = tuples[1]
+    x3, y3 = tuples[2]
 
-    # Initial guess for parameters
-    initial_guess = [0, 0, 0]
-
-    # Fit the parabola to the given points
-    params = sc_op.minimize(
-      lambda params: 
-      sum((parabola_eq(x, *params) - y)**2 
-          for x, y in [point1, point2, point3]), initial_guess).x
+    matrix = sp.Matrix([
+      [x1**2, x1, 1, y1],
+      [x2**2, x2, 1, y2],
+      [x3**2, x3, 1, y3]]).rref()
+    print(matrix)
     
-    # Minimum of the parabola occurs at x = -b/(2a)
-    min_x = -params[1] / (2 * params[0])
-    min_y = parabola_eq(min_x, *params)
-    return min_x, min_y
+
+
 
 
   ################################
