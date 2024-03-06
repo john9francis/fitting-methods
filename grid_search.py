@@ -77,7 +77,7 @@ class GridSearch():
     best combination to get an extremely low chi-squared
     '''
     self.find_optimal_param_value("a1", self.a1)
-    #self.find_optimal_param_value("a2", self.a2)
+    self.find_optimal_param_value("a2", self.a2)
     #self.find_optimal_param_value("mu1", self.mu1)
     #self.find_optimal_param_value("mu2", self.mu2)
     #self.find_optimal_param_value("gamma1", self.gamma1)
@@ -100,6 +100,8 @@ class GridSearch():
 
     old_param = None
     new_param = None
+
+    can_break = False
 
     while True:
       # set which parameter we are changing
@@ -126,27 +128,66 @@ class GridSearch():
 
       new_chi_sq = self.calc_chi_squared()
 
-      if new_chi_sq < self.current_chi_2:
-        old_chi_sq = self.current_chi_2
-        self.current_chi_2 = new_chi_sq
-        param = new_param
+      # only break if the values have been set
+      if old_param != None and new_param != None and old_chi_sq != None and new_chi_sq != None:
+        can_break = True
 
-      elif old_param == None and new_param == None and old_chi_sq == None and new_chi_sq == None:
-        # Make sure that these all have values. 
-        pass
-
-      else:
+      if new_chi_sq > self.current_chi_2 and can_break:
         break
+
+      old_chi_sq = self.current_chi_2
+      self.current_chi_2 = new_chi_sq
+      param = new_param
+
 
     # after the loop is done, we use the 3 points:
     # old, current, and new chi squareds, and
     # fit them to a parabola, then find the minimum.
       
-    #param, self.current_chi_2 = self.find_min_of_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
-    self.fit_points_to_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
+    a, b, c = self.fit_points_to_parabola((old_param, old_chi_sq),(param, self.current_chi_2),(new_param, new_chi_sq))
+    p, chi = self.find_min_of_parabola(a, b, c)
 
-    print(f"The optimal value of {parameter_name} is {param} with a chi squared value of: {self.current_chi_2}")
+    # don't forget to set our parameters to their
+    # optimal values
+    self.set_parameter_to_value(parameter_name, p)
+    self.current_chi_2 = chi
+
+    print(f"The optimal value of {parameter_name} is {p} with a chi squared value of: {chi}")
       
+  def set_parameter_to_value(self, parameter_name:str, param:float):
+    if parameter_name == "a1":
+      self.a1 = param
+    elif parameter_name == "a2":
+      self.a2 = param
+    elif parameter_name == "mu1":
+      self.mu1 = param
+    elif parameter_name == "mu2":
+      self.mu2 = param
+    elif parameter_name == "gamma1":
+      self.gamma1 = param
+    elif parameter_name == "gamma2":
+      self.gamma2 = param
+    else:
+      print("Parameter name not recognized in\
+            the set_parameter_to_value function")
+
+  def get_parameter_by_name(self, parameter_name) -> float:
+    if parameter_name == "a1":
+      return self.a1
+    elif parameter_name == "a2":
+      return self.a2
+    elif parameter_name == "mu1":
+      return self.mu1
+    elif parameter_name == "mu2":
+      return self.mu2
+    elif parameter_name == "gamma1":
+      return self.gamma1
+    elif parameter_name == "gamma2":
+      return self.gamma2
+    else:
+      print("Parameter name not recognized in\
+            the set_parameter_to_value function")
+      return 0.0
 
   def fit_points_to_parabola(self, point1:tuple, point2:tuple, point3:tuple) -> tuple:
     '''Takes in 3 points (x,y) and fits them to a parabola.
@@ -158,7 +199,6 @@ class GridSearch():
 
     # first, sort from smallest x to largest
     tuples = sorted([point1, point2, point3])
-    print(tuples)
     x1, y1 = tuples[0]
     x2, y2 = tuples[1]
     x3, y3 = tuples[2]
@@ -167,10 +207,24 @@ class GridSearch():
       [x1**2, x1, 1, y1],
       [x2**2, x2, 1, y2],
       [x3**2, x3, 1, y3]])
-    print(matrix)
-    matrix = matrix.rref()
-    print(matrix)
     
+    matrix = matrix.rref()
+
+    # "matrix" variable is a tuple. first entry is the matrix,
+    # second entry is a tuple of which columns have pivots.
+    # so here I am accessing the matrix, and then the last column 
+    # of the matrix. 
+    last_column = matrix[0][:, -1]
+    a, b, c = tuple(last_column)
+
+    return a,b,c
+  
+
+  def find_min_of_parabola(self, a, b, c) -> tuple:
+    '''Finds the min x,y of a parabola'''
+    min_y = c - b**2 / (4*a)
+    min_x = -b / (2 * a)
+    return min_x, min_y 
 
 
 
