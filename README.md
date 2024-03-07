@@ -7,7 +7,7 @@ Source: Bevington Data Analysis for the Physical Sciences, 8.3
 
 $$y(x) = a_1L(x;\mu_1\Gamma_1) + a_2L(x;\mu_2,\Gamma_2)$$
 
-- Eventually we will be finding just a1 and a2, but eventually we will expand our fit function to find the parameters $\mu_1$, $\Gamma_1$, etc.
+- At first we will be finding just a1 and a2, but eventually we will expand our fit function to find the parameters $\mu_1$, $\Gamma_1$, etc.
 - For now, we will accept these initial values:
 
 
