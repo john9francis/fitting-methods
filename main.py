@@ -13,6 +13,8 @@ def main():
 
   grid_search = GridSearch(*mu_gamma_a_list)
 
+  grid_search.plot_data_and_fit()
+
   grid_search.minimize_chi_squared()
   print(f"Final chi squared: {grid_search.get_reduced_chi_sq()}")
 
