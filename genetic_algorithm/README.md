@@ -21,6 +21,6 @@ For each creature, we calculate the chi-squared for the function given their par
 
 The surviving creatures are allowed to reproduce. In other words, new creatures are generated inheriting the parameters from the surviving creatures. 
 
-Next, we mutate some creatures. My plan is that half of the creatures mutate by adding or subtracting a value onto one of their parameters. A fourth of them mutate by multiplying or dividing a parameter.
+Next, we mutate some creatures. My plan is that half of the creatures mutate by adding or subtracting a value onto one of their parameters. A fourth of them mutate by multiplying or dividing a parameter by a value. This value could be the best chi-squared value of the previous run, that way it gets more and more precise. 
 
 Then, we repeat until the chi-squared is as small as we can get it. 
