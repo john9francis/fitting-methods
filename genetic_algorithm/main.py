@@ -1,4 +1,5 @@
 from creature import Creature
+from creature_list import CreatureList
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -7,9 +8,9 @@ def main():
   data = [.1,1.,2.,3.,2.,5.,2.,2.,2.,1.,.1]
 
   # get a creature and test the fit
-  c = Creature()
-  c.set_data(data)
-  c.plot_fit()
+  cl = CreatureList(100, data)
+  for _ in range(10):
+    cl.run()
 
 
 if __name__ == "__main__":
