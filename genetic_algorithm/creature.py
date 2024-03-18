@@ -53,24 +53,17 @@ class Creature:
   def mutate(self, amount:float):
     '''
     Takes in an amount for how much to mutate a param, then
-    changes one random param by either +,-,*,/
+    changes one random param by either + or - that amount.
     '''
     indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
     param_to_change = self.param_list[indx_to_change]
 
-    random_val = self.rand.uniform(0,1)
     t_or_f = self.rand.randint(0, 1)
 
-    if random_val > .9:
-      if t_or_f == 0:
-        param_to_change *= amount
-      else:
-        param_to_change /= amount
-    elif random_val > .5:
-      if t_or_f == 0:
-        param_to_change += amount
-      else:
-        param_to_change -= amount
+    if t_or_f == 0:
+      param_to_change += amount
+    else:
+      param_to_change -= amount
       
     self.param_list[indx_to_change] = param_to_change
 
@@ -110,6 +103,12 @@ class Creature:
     e = self.param_list[4]
     f = self.param_list[5]
     g = self.param_list[6]
+
+    # Add a small epsilon value to x to avoid division by zero
+    epsilon = 1e-10
+    x += epsilon
+
+    
     fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     
     return fit
