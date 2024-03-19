@@ -5,11 +5,12 @@ import numpy as np
 import random
 
 class CreatureList:
-  def __init__(self, how_many_creatures:int, data:np.ndarray) -> None:
+  def __init__(self, how_many_creatures:int, x_data:np.ndarray, y_data:np.ndarray) -> None:
     self.creature_amount = how_many_creatures
     self.set_random_creatures(how_many_creatures)
 
-    self.data = data
+    self.x_data = x_data
+    self.y_data = y_data
 
     self.chi_squared_list = []
 
@@ -27,7 +28,7 @@ class CreatureList:
     new_chi_sq_list = []
 
     for c in self.creature_list:
-      c.set_data(self.data)
+      c.set_data(self.y_data, self.x_data)
       new_chi_sq_list.append(c.get_chi_sq())
 
     self.chi_squared_list = new_chi_sq_list
@@ -45,9 +46,9 @@ class CreatureList:
     '''
     original_creature_amount = len(self.creature_list)
     
-    if self.get_worst_chi_squared() > 1000:
-      self.creature_list = []
-      return
+    # if self.get_worst_chi_squared() > 100000:
+    #   self.creature_list = []
+    #   return
     
     cutoff = .1 * self.get_worst_chi_squared()
 
@@ -81,7 +82,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(100)
+      c.mutate(10)
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -98,5 +99,9 @@ class CreatureList:
       self.repopulate_creatures()
       self.create_chi_sq_list()
 
+      print(self.chi_squared_list)
+
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
+    self.creature_list[0].plot_fit()
+    
 

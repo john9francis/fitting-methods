@@ -13,7 +13,7 @@ class Creature:
     self.param_list = [0, 0, 0, 0, 0, 0, 0]
 
     if len(param_list) == 0:
-      self.set_random_params(0, 100)
+      self.set_random_params(-10, 10)
     else:
       self.param_list = param_list
 
@@ -108,7 +108,7 @@ class Creature:
     epsilon = 1e-10
     x += epsilon
 
-    
+
     fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     
     return fit
