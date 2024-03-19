@@ -42,6 +42,15 @@ class CreatureList:
   
   def get_median_chi_squared(self):
     return np.median(self.chi_squared_list)
+  
+  def get_best_creature(self):
+    best_val = self.get_best_chi_squared()
+
+    for c in self.creature_list:
+      if c.get_chi_sq() == best_val:
+        return c
+      
+    print("Best creature not found..?")
 
   def kill_creatures(self):
     '''
@@ -85,7 +94,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 100))
+      c.mutate(self.rand.uniform(0, 10))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -104,7 +113,8 @@ class CreatureList:
 
 
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
-    # print(self.chi_squared_list)
-    self.creature_list[0].plot_fit()
+    # print the best one
+    self.get_best_creature().plot_fit()
+    
     
 
