@@ -5,9 +5,9 @@ import numpy as np
 import random
 
 class CreatureList:
-  def __init__(self, how_many_creatures:int, x_data:np.ndarray, y_data:np.ndarray) -> None:
+  def __init__(self, how_many_creatures:int, x_data:np.ndarray, y_data:np.ndarray, initial_guess:None) -> None:
     self.creature_amount = how_many_creatures
-    self.set_random_creatures(how_many_creatures)
+    self.set_random_creatures(how_many_creatures, initial_guess)
 
     self.x_data = x_data
     self.y_data = y_data
@@ -17,8 +17,11 @@ class CreatureList:
     self.rand = random.Random()
   
 
-  def set_random_creatures(self, amount):
-    self.creature_list = [Creature() for _ in range(amount)]
+  def set_random_creatures(self, amount, initial_guess):
+    if initial_guess == None:
+      self.creature_list = [Creature() for _ in range(amount)]
+    else:
+      self.creature_list = [Creature(initial_guess) for _ in range(amount)]
 
 
   def create_chi_sq_list(self):
@@ -51,6 +54,7 @@ class CreatureList:
         return c
       
     print("Best creature not found..?")
+    print(f"Failed looking for creature with a chi squared of: {best_val}")
 
   def kill_creatures(self):
     '''

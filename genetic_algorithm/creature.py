@@ -66,6 +66,10 @@ class Creature:
 
     t_or_f = self.rand.randint(0, 1)
 
+    # Possibly do something crazy
+    if self.rand.uniform(0,1) > .9:
+      amount += self.rand.uniform(0, 500)
+
     if t_or_f == 0:
       param_to_change += amount
     else:
@@ -125,6 +129,8 @@ class Creature:
     for i in range(len(self.x_data)):
       chi_sq += (self.y_data[i] - self.y_fit[i]) ** 2 / (self.y_uncertainties[i] ** 2)
 
+    if chi_sq == np.nan:
+      return 1e10
     return chi_sq
   
 
@@ -135,5 +141,13 @@ class Creature:
     plt.legend()
 
     print(f"The chi-squared value of this fit is: {self.chi_sq}.")
+    print(f"The parameters were as follows:")
+    print(f"a: {self.param_list[0]}")
+    print(f"b: {self.param_list[1]}")
+    print(f"c: {self.param_list[2]}")
+    print(f"d: {self.param_list[3]}")
+    print(f"e: {self.param_list[4]}")
+    print(f"f: {self.param_list[5]}")
+    print(f"g: {self.param_list[6]}")
 
     plt.show()
