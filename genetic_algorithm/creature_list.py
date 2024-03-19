@@ -53,7 +53,7 @@ class CreatureList:
     #   self.creature_list = []
     #   return
     
-    cutoff = self.get_median_chi_squared()
+    cutoff = self.get_best_chi_squared() + 20
 
     i = 0
     while i < len(self.creature_list):
@@ -85,7 +85,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 1))
+      c.mutate(self.rand.uniform(0, 10))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
