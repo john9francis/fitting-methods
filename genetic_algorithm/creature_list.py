@@ -62,7 +62,7 @@ class CreatureList:
     #   self.creature_list = []
     #   return
     
-    cutoff = self.get_best_chi_squared() + 20
+    cutoff = self.get_best_chi_squared() + .01
 
     i = 0
     while i < len(self.creature_list):
@@ -73,8 +73,13 @@ class CreatureList:
         i += 1
 
     final_creature_amount = len(self.creature_list)
-    # if final_creature_amount != original_creature_amount:
-    #   print(f"{original_creature_amount - final_creature_amount} creatures were killed, with a survival rate of {final_creature_amount/original_creature_amount}%.")
+    if final_creature_amount != original_creature_amount:
+      # print(f"{original_creature_amount - final_creature_amount} creatures were killed, with a survival rate of {final_creature_amount/original_creature_amount}%.")
+      pass
+    else:
+      # just kill some random
+      for i in range(10):
+        self.creature_list.pop(i)
 
 
   def repopulate_creatures(self):
@@ -94,7 +99,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 1))
+      c.mutate(self.rand.uniform(0, 2))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -105,8 +110,8 @@ class CreatureList:
     Does one single run of killing, repopulating, and mutating creatures
     '''
     self.create_chi_sq_list()
-    print(self.chi_squared_list)
     print(f"Starting chi-squared: {self.get_best_chi_squared()}")
+
     for _ in range(how_many_times):
       self.kill_creatures()
       self.repopulate_creatures()
