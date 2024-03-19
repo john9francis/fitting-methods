@@ -7,7 +7,7 @@ import random
 class CreatureList:
   def __init__(self, how_many_creatures:int, data:np.ndarray) -> None:
     self.creature_amount = how_many_creatures
-    self.creature_list = [Creature() for _ in range(self.creature_amount)]
+    self.set_random_creatures(how_many_creatures)
 
     self.data = data
 
@@ -15,6 +15,9 @@ class CreatureList:
 
     self.rand = random.Random()
   
+
+  def set_random_creatures(self, amount):
+    self.creature_list = [Creature() for _ in range(amount)]
 
 
   def create_chi_sq_list(self):
@@ -38,10 +41,14 @@ class CreatureList:
 
   def kill_creatures(self):
     '''
-    Kills 2/3 of the creatures with the worst chi-squareds
+    Kills the creatures with the worst chi-squareds
     '''
     original_creature_amount = len(self.creature_list)
-
+    
+    if self.get_worst_chi_squared() > 1000:
+      self.creature_list = []
+      return
+    
     cutoff = .1 * self.get_worst_chi_squared()
 
     i = 0
@@ -61,6 +68,11 @@ class CreatureList:
     '''
     make the creature list go back up to the self.creature_amount
     '''
+
+    if len(self.creature_list) == 0:
+      self.set_random_creatures(self.creature_amount)
+      return
+
     new_creature_amount = self.creature_amount - len(self.creature_list)
     new_creatures = []
 
