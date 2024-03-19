@@ -13,7 +13,7 @@ class Creature:
     self.param_list = [0, 0, 0, 0, 0, 0, 0]
 
     if len(param_list) == 0:
-      self.set_random_params(-10, 10)
+      self.set_random_params(0, 100)
     else:
       self.param_list = param_list
 
@@ -30,6 +30,12 @@ class Creature:
   def set_random_params(self, min, max):
     for i in range(len(self.param_list)):
       self.param_list[i] = self.rand.uniform(min, max)
+
+    # set some guesses
+    self.param_list[0] = 510
+    self.param_list[1] = 5
+    self.param_list[2] = 1
+    self.param_list[3] = 25000
 
 
   def set_params(self, param_list):
@@ -94,11 +100,7 @@ class Creature:
     '''
     a = self.param_list[0]
     b = self.param_list[1]
-    if b == 1:
-      b = 1.1
     c = self.param_list[2]
-    if c == 0:
-      c = .1
     d = self.param_list[3]
     e = self.param_list[4]
     f = self.param_list[5]
@@ -108,10 +110,12 @@ class Creature:
     epsilon = 1e-10
     x += epsilon
 
-
-    fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
+    # fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     # for testing purposes, I will first fit it to only a gamma
     # fit = a * x ** (b - 1) * np.exp(-x / c)
+
+    # I'm going to try to fit it to a normal
+    fit = d * (a * np.sqrt(np.pi * 2))**(-1) * np.exp(-.5 * ((x - b) / a)**2) + c
     
     return fit
   

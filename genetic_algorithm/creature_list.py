@@ -85,7 +85,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 10))
+      c.mutate(self.rand.uniform(0, 100))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
