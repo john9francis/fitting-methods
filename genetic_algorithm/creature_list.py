@@ -78,7 +78,7 @@ class CreatureList:
       pass
     else:
       # just kill some random
-      for i in range(10):
+      for i in range(30):
         self.creature_list.pop(i)
 
 
@@ -109,15 +109,16 @@ class CreatureList:
     '''
     Does one single run of killing, repopulating, and mutating creatures
     '''
+    print(f"Starting {how_many_times} runs")
     self.create_chi_sq_list()
-    print(f"Starting chi-squared: {self.get_best_chi_squared()}")
+    original_chi_sq = self.get_best_chi_squared()
 
     for _ in range(how_many_times):
       self.kill_creatures()
       self.repopulate_creatures()
       self.create_chi_sq_list()
 
-
+    print(f"Starting chi-squared: {original_chi_sq}")
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
     # print the best one
     self.get_best_creature().plot_fit()
