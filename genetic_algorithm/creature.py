@@ -109,7 +109,9 @@ class Creature:
     x += epsilon
 
 
-    fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
+    # fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
+    # for testing purposes, I will first fit it to only a gamma
+    fit = a * x ** (b - 1) * np.exp(-x / c)
     
     return fit
   

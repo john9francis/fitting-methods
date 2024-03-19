@@ -39,6 +39,9 @@ class CreatureList:
   
   def get_worst_chi_squared(self):
     return max(self.chi_squared_list)
+  
+  def get_median_chi_squared(self):
+    return np.median(self.chi_squared_list)
 
   def kill_creatures(self):
     '''
@@ -50,13 +53,13 @@ class CreatureList:
     #   self.creature_list = []
     #   return
     
-    cutoff = .1 * self.get_worst_chi_squared()
+    cutoff = self.get_median_chi_squared()
 
     i = 0
     while i < len(self.creature_list):
-      if self.creature_list[i].calculate_chi_squared() > cutoff:
+      if self.creature_list[i].calculate_chi_squared() >= cutoff:
         self.creature_list.pop(i)
-        print("Removed a creature!")
+        # print("Removed a creature!")
       else:
         i += 1
 
@@ -82,7 +85,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(10)
+      c.mutate(self.rand.uniform(0, 1))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -99,9 +102,9 @@ class CreatureList:
       self.repopulate_creatures()
       self.create_chi_sq_list()
 
-      print(self.chi_squared_list)
 
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
+    # print(self.chi_squared_list)
     self.creature_list[0].plot_fit()
     
 
