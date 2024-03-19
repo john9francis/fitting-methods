@@ -94,7 +94,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 10))
+      c.mutate(self.rand.uniform(0, 1))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -105,6 +105,7 @@ class CreatureList:
     Does one single run of killing, repopulating, and mutating creatures
     '''
     self.create_chi_sq_list()
+    print(self.chi_squared_list)
     print(f"Starting chi-squared: {self.get_best_chi_squared()}")
     for _ in range(how_many_times):
       self.kill_creatures()
