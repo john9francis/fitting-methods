@@ -94,7 +94,7 @@ class Creature:
     self.chi_sq = self.calculate_chi_squared()
 
   def get_chi_sq(self):
-    return self.chi_sq
+    return self.calculate_chi_squared()
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
