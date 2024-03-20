@@ -64,7 +64,7 @@ class CreatureList:
       self.creature_list = []
       return
     
-    cutoff = self.get_best_chi_squared() + .01
+    cutoff = self.get_best_chi_squared() + 1
 
     i = 0
     while i < len(self.creature_list):
@@ -76,11 +76,11 @@ class CreatureList:
 
     final_creature_amount = len(self.creature_list)
     if final_creature_amount != original_creature_amount:
-      # print(f"{original_creature_amount - final_creature_amount} creatures were killed, with a survival rate of {final_creature_amount/original_creature_amount}%.")
+      # print(f"{original_creature_amount - final_creature_amount} creatures were killed.")
       pass
     else:
       # just kill some random
-      for i in range(10):
+      for i in range(20):
         self.creature_list.pop(i)
 
 
@@ -130,16 +130,6 @@ class CreatureList:
       if new_chi_squared > old_chi_squared:
         self.mutate_rate *= .8
       print(f"Best creature's chi squared: {self.get_best_chi_squared()}")
-
-      # idea: make a smart mutating system: if the chi squared hasn't gone up in awhile,
-      # then add a bit to the mutate rate.
-      # if new_chi_squared < old_chi_squared:
-      #   how_many_good_chis += 1
-      
-      # if how_many_good_chis > 20:
-      #   self.mutate_rate *= 1.2
-      #   how_many_good_chis = 0
-      # ^^^^^^^^^ That made it worse
 
 
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
