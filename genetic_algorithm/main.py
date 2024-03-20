@@ -8,7 +8,7 @@ def main():
 
   # get a creature and test the fit
   cl = CreatureList(100, x_data, y_data)
-  cl.run(300)
+  cl.run(500)
 
 
 if __name__ == "__main__":

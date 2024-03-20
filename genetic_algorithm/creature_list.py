@@ -15,6 +15,8 @@ class CreatureList:
     self.chi_squared_list = []
 
     self.rand = random.Random()
+
+    self.mutate_rate = 100
   
 
   def set_random_creatures(self, amount):
@@ -58,9 +60,9 @@ class CreatureList:
     '''
     original_creature_amount = len(self.creature_list)
     
-    # if self.get_worst_chi_squared() > 100000:
-    #   self.creature_list = []
-    #   return
+    if self.get_worst_chi_squared() > 1000000:
+      self.creature_list = []
+      return
     
     cutoff = self.get_best_chi_squared() + .01
 
@@ -99,7 +101,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 2))
+      c.mutate(self.rand.uniform(0, self.mutate_rate))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
@@ -112,10 +114,32 @@ class CreatureList:
     self.create_chi_sq_list()
     print(f"Starting chi-squared: {self.get_best_chi_squared()}")
 
+    how_many_good_chis = 0
+
     for _ in range(how_many_times):
+
+      old_chi_squared = self.get_best_chi_squared()
+
       self.kill_creatures()
       self.repopulate_creatures()
       self.create_chi_sq_list()
+
+      new_chi_squared = self.get_best_chi_squared()
+
+      # adjust the mutation rate
+      if new_chi_squared > old_chi_squared:
+        self.mutate_rate *= .8
+      print(f"Best creature's chi squared: {self.get_best_chi_squared()}")
+
+      # idea: make a smart mutating system: if the chi squared hasn't gone up in awhile,
+      # then add a bit to the mutate rate.
+      # if new_chi_squared < old_chi_squared:
+      #   how_many_good_chis += 1
+      
+      # if how_many_good_chis > 20:
+      #   self.mutate_rate *= 1.2
+      #   how_many_good_chis = 0
+      # ^^^^^^^^^ That made it worse
 
 
     print(f"Final chi-squared: {self.get_best_chi_squared()}")

@@ -56,12 +56,15 @@ class Creature:
   
 
 
-  def mutate(self, amount:float):
+  def mutate(self, amount:float, indx_to_change=-1):
     '''
     Takes in an amount for how much to mutate a param, then
     changes one random param by either + or - that amount.
     '''
-    indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
+    random_param = False
+
+    if indx_to_change < 0:
+      indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
     param_to_change = self.param_list[indx_to_change]
 
     t_or_f = self.rand.randint(0, 1)
@@ -127,7 +130,7 @@ class Creature:
     for i in range(len(self.x_data)):
       chi_sq += (self.y_data[i] - self.y_fit[i]) ** 2 / (self.y_uncertainties[i] ** 2)
 
-    return chi_sq
+    return chi_sq / 3 # n_parameters minus 1 NOTE: This is only for the normal one.
   
 
   def plot_fit(self):
