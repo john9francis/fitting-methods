@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 class Creature:
   def __init__(self, param_list:list = []) -> None:
 
+    self.normal_dist = True
+
     self.rand = random.Random()
 
     # parameters
@@ -32,10 +34,11 @@ class Creature:
       self.param_list[i] = self.rand.uniform(min, max)
 
     # set some guesses
-    self.param_list[0] = 20000
-    self.param_list[1] = 512
-    self.param_list[2] = 1
-    self.param_list[3] = 1
+    if self.normal_dist:
+      self.param_list[0] = 20000
+      self.param_list[1] = 512
+      self.param_list[2] = 1
+      self.param_list[3] = 1
 
 
   def set_params(self, param_list):
@@ -113,14 +116,10 @@ class Creature:
     epsilon = 1e-10
     x += epsilon
 
-    # fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
-    # for testing purposes, I will first fit it to only a gamma
-    # fit = a * x ** (b - 1) * np.exp(-x / c)
-
-    # I'm going to try to fit it to a normal
-    fit = a * np.exp(-.5*(x/c-b/c)**2) + d
-
-    # Honestly, it could easily fit to a lorentzian.
+    if self.normal_dist:
+      fit = a * np.exp(-.5*(x/c-b/c)**2) + d
+    else:
+      fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     
     return fit
   
