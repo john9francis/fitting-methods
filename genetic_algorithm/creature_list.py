@@ -62,7 +62,8 @@ class CreatureList:
     '''
     original_creature_amount = len(self.creature_list)
     
-    if self.get_worst_chi_squared() > 1000000:
+    # reset if the chi-squared is just too darn high
+    if self.get_best_chi_squared() > 1000000:
       self.creature_list = []
       return
     
