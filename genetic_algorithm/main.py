@@ -1,7 +1,5 @@
 from creature_list import CreatureList
 from data_generator import DataGenerator
-import numpy as np
-from matplotlib import pyplot as plt
 
 def main():
   # get data
