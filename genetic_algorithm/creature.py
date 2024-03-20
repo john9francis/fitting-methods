@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 class Creature:
   def __init__(self, param_list:list = []) -> None:
 
-    self.normal_dist = True
+    self.normal_dist = False
 
     self.rand = random.Random()
 
@@ -79,6 +79,11 @@ class Creature:
       
     self.param_list[indx_to_change] = param_to_change
 
+
+    # Very small chance of a crazy huge mutation
+    if self.rand.uniform(0, 1) > .7:
+      self.param_list[indx_to_change] = self.rand.uniform(-1000, 1000)
+      
 
 
 
