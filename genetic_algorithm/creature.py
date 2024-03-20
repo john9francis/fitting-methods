@@ -116,6 +116,8 @@ class Creature:
 
     # I'm going to try to fit it to a normal
     fit = a * np.exp(-.5*(x/c-b/c)**2) + d
+
+    # Honestly, it could easily fit to a lorentzian.
     
     return fit
   
@@ -135,5 +137,13 @@ class Creature:
     plt.legend()
 
     print(f"The chi-squared value of this fit is: {self.chi_sq}.")
+    print("Parameters:")
+    print(f"a: {self.param_list[0]}")
+    print(f"b: {self.param_list[1]}")
+    print(f"c: {self.param_list[2]}")
+    print(f"d: {self.param_list[3]}")
+    print(f"e: {self.param_list[4]}")
+    print(f"f: {self.param_list[5]}")
+    print(f"g: {self.param_list[6]}")
 
     plt.show()
