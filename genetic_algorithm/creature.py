@@ -72,10 +72,6 @@ class Creature:
 
     t_or_f = self.rand.randint(0, 1)
 
-    # Possibly do something crazy
-    if self.rand.uniform(0,1) > .9:
-      amount += self.rand.uniform(0, 500)
-
     if t_or_f == 0:
       param_to_change += amount
     else:
