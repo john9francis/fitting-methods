@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 class Creature:
   def __init__(self, param_list:list = []) -> None:
 
-    self.normal_dist = False
+    self.normal_dist = True
 
     self.rand = random.Random()
 
