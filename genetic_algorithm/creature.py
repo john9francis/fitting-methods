@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 class Creature:
   def __init__(self, param_list:list = []) -> None:
 
+    self.normal_dist = True
+
     self.rand = random.Random()
 
     # parameters
@@ -32,10 +34,11 @@ class Creature:
       self.param_list[i] = self.rand.uniform(min, max)
 
     # set some guesses
-    # self.param_list[0] = 20000
-    # self.param_list[1] = 512
-    # self.param_list[2] = 1
-    # self.param_list[3] = 1
+    if self.normal_dist:
+      self.param_list[0] = 20000
+      self.param_list[1] = 512
+      self.param_list[2] = 1
+      self.param_list[3] = 1
 
 
   def set_params(self, param_list):
@@ -56,12 +59,15 @@ class Creature:
   
 
 
-  def mutate(self, amount:float):
+  def mutate(self, amount:float, indx_to_change=-1):
     '''
     Takes in an amount for how much to mutate a param, then
     changes one random param by either + or - that amount.
     '''
-    indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
+    random_param = False
+
+    if indx_to_change < 0:
+      indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
     param_to_change = self.param_list[indx_to_change]
 
     t_or_f = self.rand.randint(0, 1)
@@ -78,6 +84,11 @@ class Creature:
     self.param_list[indx_to_change] = param_to_change
 
 
+    # Very small chance of a crazy huge mutation
+    if self.rand.uniform(0, 1) > .7:
+      self.param_list[indx_to_change] = self.rand.uniform(-1000, 1000)
+      
+
 
 
   def set_data(self, y_data:np.ndarray, x_data:np.ndarray = np.array([])):
@@ -92,7 +103,7 @@ class Creature:
     self.chi_sq = self.calculate_chi_squared()
 
   def get_chi_sq(self):
-    return self.chi_sq
+    return self.calculate_chi_squared()
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
@@ -114,12 +125,10 @@ class Creature:
     epsilon = 1e-10
     x += epsilon
 
-    fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
-    # for testing purposes, I will first fit it to only a gamma
-    # fit = a * x ** (b - 1) * np.exp(-x / c)
-
-    # I'm going to try to fit it to a normal
-    # fit = a * np.exp(-.5*(x/c-b/c)**2) + d
+    if self.normal_dist:
+      fit = a * np.exp(-.5*(x/c-b/c)**2) + d
+    else:
+      fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     
     return fit
   
@@ -129,9 +138,7 @@ class Creature:
     for i in range(len(self.x_data)):
       chi_sq += (self.y_data[i] - self.y_fit[i]) ** 2 / (self.y_uncertainties[i] ** 2)
 
-    if chi_sq == np.nan:
-      return 1e10
-    return chi_sq
+    return chi_sq / 3 # n_parameters minus 1 NOTE: This is only for the normal one.
   
 
   def plot_fit(self):
@@ -141,7 +148,7 @@ class Creature:
     plt.legend()
 
     print(f"The chi-squared value of this fit is: {self.chi_sq}.")
-    print(f"The parameters were as follows:")
+    print("Parameters:")
     print(f"a: {self.param_list[0]}")
     print(f"b: {self.param_list[1]}")
     print(f"c: {self.param_list[2]}")

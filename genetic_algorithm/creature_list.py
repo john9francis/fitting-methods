@@ -15,13 +15,14 @@ class CreatureList:
     self.chi_squared_list = []
 
     self.rand = random.Random()
+
+    self.mutate_rate = 100
+
+    self.save_filename = "best_creature_params.txt"
   
 
-  def set_random_creatures(self, amount, initial_guess):
-    if initial_guess == None:
-      self.creature_list = [Creature() for _ in range(amount)]
-    else:
-      self.creature_list = [Creature(initial_guess) for _ in range(amount)]
+  def set_random_creatures(self, amount):
+    self.creature_list = [Creature() for _ in range(amount)]
 
 
   def create_chi_sq_list(self):
@@ -62,11 +63,12 @@ class CreatureList:
     '''
     original_creature_amount = len(self.creature_list)
     
-    # if self.get_worst_chi_squared() > 100000:
-    #   self.creature_list = []
-    #   return
+    # reset if the chi-squared is just too darn high
+    if self.get_best_chi_squared() > 1000000:
+      self.creature_list = []
+      return
     
-    cutoff = self.get_best_chi_squared() + .01
+    cutoff = self.get_best_chi_squared() + 1
 
     i = 0
     while i < len(self.creature_list):
@@ -78,11 +80,11 @@ class CreatureList:
 
     final_creature_amount = len(self.creature_list)
     if final_creature_amount != original_creature_amount:
-      # print(f"{original_creature_amount - final_creature_amount} creatures were killed, with a survival rate of {final_creature_amount/original_creature_amount}%.")
+      # print(f"{original_creature_amount - final_creature_amount} creatures were killed.")
       pass
     else:
       # just kill some random
-      for i in range(30):
+      for i in range(len(self.creature_list ) // 10):
         self.creature_list.pop(i)
 
 
@@ -103,29 +105,73 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = Creature(params)
-      c.mutate(self.rand.uniform(0, 2))
+      c.mutate(self.rand.uniform(0, self.mutate_rate))
       new_creatures.append(c)
 
     self.creature_list.extend(new_creatures)
 
 
+  def load_best_params(self):
+    '''
+    Overwrites the creature list with the best params from the file
+    '''
+    try:
+      params_array = np.loadtxt(self.save_filename)
+    except FileNotFoundError:
+      return False
+    
+    params_list = list(params_array)
+    self.creature_list = [Creature(params_list) for _ in range(10)]
+    pass
+
+
+  def save_best_params(self):
+    with open(self.save_filename, "w") as file:
+      for i in self.get_best_creature().get_params():
+        file.write(str(i) + '\n')
+
+
   def run(self, how_many_times:int):
     '''
-    Does one single run of killing, repopulating, and mutating creatures
+    Does run(s) of killing, repopulating, and mutating creatures
     '''
-    print(f"Starting {how_many_times} runs")
+
+    # start off loading from a file:
+    self.load_best_params()
+
     self.create_chi_sq_list()
-    original_chi_sq = self.get_best_chi_squared()
+    print(f"Starting chi-squared: {self.get_best_chi_squared()}")
+
 
     for _ in range(how_many_times):
+
+      old_chi_squared = self.get_best_chi_squared()
+
       self.kill_creatures()
       self.repopulate_creatures()
       self.create_chi_sq_list()
 
-    print(f"Starting chi-squared: {original_chi_sq}")
+      new_chi_squared = self.get_best_chi_squared()
+
+      # adjust the mutation rate
+      if new_chi_squared > old_chi_squared:
+        self.mutate_rate *= .8
+      print(f"Best creature's chi squared: {self.get_best_chi_squared()}")
+
+
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
+
+    # save the best one
+    self.save_best_params()
+
     # print the best one
     self.get_best_creature().plot_fit()
+
+
+
+
+    creature = self.get_best_creature()
+    params = creature.get_params()
     
     
 
