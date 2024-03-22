@@ -98,7 +98,7 @@ class Creature:
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
-    raise NotImplementedError
+    raise NotImplementedError("The base creature has no fit function. Please use a derived creature like NormalCreature for example.")
     '''
     Takes in an array of x_values
     The fit function is a gamma added to an arctan:

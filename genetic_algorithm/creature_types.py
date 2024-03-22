@@ -8,12 +8,17 @@ import numpy as np
 
 from creature import Creature
 
+class GammaArctanCreature(Creature):
+
+  save_filename = "save_files/gamma_arctan_best_params.txt"
+
+  
+
 class LorentzianCreature(Creature):
 
   save_filename = "save_files/lorentzian_best_params.txt"
 
-  def __init__(self, param_list: list=[]) -> None:
-    super().__init__(param_list)
+  def fit_function(self, x: np.ndarray) -> np.ndarray:
     pass
 
 
@@ -21,11 +26,6 @@ class LorentzianCreature(Creature):
 class NormalCreature(Creature):
 
   save_filename = "save_files/normal_best_params.txt"
-
-  def __init__(self, param_list: list=[]) -> None:
-    super().__init__(param_list)
-
-    pass
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
@@ -42,7 +42,12 @@ class NormalCreature(Creature):
   
 
   def set_random_params(self, min, max):
-    # set some guesses
+    # initial guesses.
+    # Note: 
+    # param list 0 is a scaling factor
+    # param list 1 is the mean
+    # param list 2 is the standard deviation
+    # param list 3 is the + c at the end
     self.param_list[0] = 20000
     self.param_list[1] = 512
     self.param_list[2] = 1
