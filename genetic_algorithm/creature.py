@@ -4,6 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class Creature:
+
+  save_filename = "save_files/base_creature_save_file.txt"
+
   def __init__(self, param_list:list = []) -> None:
 
     self.rand = random.Random()

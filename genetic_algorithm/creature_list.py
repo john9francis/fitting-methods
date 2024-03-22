@@ -20,8 +20,8 @@ class CreatureList:
 
     self.mutate_rate = 100
 
-    self.save_filename = "best_creature_params.txt"
-  
+    self.save_filename = creature_class.save_filename
+
 
   def set_random_creatures(self, amount):
     self.creature_list = [self.type_of_creature() for _ in range(amount)]
