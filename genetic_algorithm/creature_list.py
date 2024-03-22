@@ -1,6 +1,6 @@
 # A list to take care of mutating, deleting, etc. creatures.
 
-from creature import Creature
+from creature_types import NormalCreature
 import numpy as np
 import random
 
@@ -22,7 +22,7 @@ class CreatureList:
   
 
   def set_random_creatures(self, amount):
-    self.creature_list = [Creature() for _ in range(amount)]
+    self.creature_list = [NormalCreature() for _ in range(amount)]
 
 
   def create_chi_sq_list(self):
@@ -103,7 +103,7 @@ class CreatureList:
       # get params from an existing creature
       params = self.rand.choice(self.creature_list).get_params()
 
-      c = Creature(params)
+      c = NormalCreature(params)
       c.mutate(self.rand.uniform(0, self.mutate_rate))
       new_creatures.append(c)
 
@@ -120,7 +120,7 @@ class CreatureList:
       return False
     
     params_list = list(params_array)
-    self.creature_list = [Creature(params_list) for _ in range(10)]
+    self.creature_list = [NormalCreature(params_list) for _ in range(10)]
     pass
 
 
