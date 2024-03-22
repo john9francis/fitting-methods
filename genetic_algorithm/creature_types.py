@@ -3,8 +3,15 @@ import numpy as np
 
 from creature import Creature
 
+class LorentzianCreature(Creature):
+  def __init__(self, param_list: list=[]) -> None:
+    super().__init__(param_list)
+    pass
+
+  
+
 class NormalCreature(Creature):
-  def __init__(self, param_list: list = []) -> None:
+  def __init__(self, param_list: list=[]) -> None:
     super().__init__(param_list)
     pass
 
