@@ -144,6 +144,7 @@ class CreatureList:
     self.create_chi_sq_list()
     print(f"Starting chi-squared: {self.get_best_chi_squared()}")
 
+    how_many_same_chis = 0
 
     for _ in range(how_many_times):
 
@@ -155,11 +156,16 @@ class CreatureList:
 
       new_chi_squared = self.get_best_chi_squared()
 
-      # adjust the mutation rate
-      if new_chi_squared > old_chi_squared:
-        self.mutate_rate *= .8
-      print(f"Best creature's chi squared: {self.get_best_chi_squared()}")
+      # adjust the mutation rate if the best chi-squared isn't improving
+      if new_chi_squared == old_chi_squared:
+        how_many_same_chis += 1
 
+      if how_many_same_chis > 10:
+        how_many_same_chis = 0
+        self.mutate_rate *= .8
+
+
+      print(f"Best creature's chi squared: {self.get_best_chi_squared()}")
 
     print(f"Final chi-squared: {self.get_best_chi_squared()}")
 
@@ -169,11 +175,6 @@ class CreatureList:
     # print the best one
     self.get_best_creature().plot_fit()
 
-
-
-
-    creature = self.get_best_creature()
-    params = creature.get_params()
     
     
 
