@@ -19,12 +19,18 @@ class Creature:
     # (a - g) is of length 7
     self.param_list = [0, 0, 0, 0, 0, 0, 0]
 
+    # Degrees of freedom = n_data points - n_params
+    self.n_params = len(param_list)
+    self.degrees_of_freedom = 0
+
+    # Either set the params or set them to be random
     if len(param_list) == 0:
-      self.set_random_params(0, 300)
+      self.set_random_params(min=0, max=300)
     else:
       self.param_list = param_list
 
 
+    # initialize the arrays for data
     self.x_data = np.array([])
     self.y_data = np.array([])
     self.y_uncertainties = np.array([])
@@ -32,6 +38,8 @@ class Creature:
     self.y_fit = np.array([])
 
     self.chi_sq = 0
+
+
 
 
   def set_random_params(self, min, max):
@@ -46,7 +54,7 @@ class Creature:
     [a,b,c,d,e,f,g]
     and sets this creature's params to them
     '''
-    self.param_list = np.copy(param_list)
+    self.param_list = copy.deepcopy(param_list)
 
 
   def get_params(self):
@@ -61,12 +69,16 @@ class Creature:
     '''
     Takes in an amount for how much to mutate a param, then
     changes one random param by either + or - that amount.
+
+    Optional index to change variable, so we can mutate a
+    specific parameter instead of a random one.
     '''
 
     if indx_to_change < 0:
       indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
     param_to_change = self.param_list[indx_to_change]
 
+    # get a 0 or 1 to decide if we're adding or subtracting
     t_or_f = self.rand.randint(0, 1)
 
     # Very small chance of a crazy huge mutation
@@ -78,15 +90,16 @@ class Creature:
     else:
       param_to_change -= amount
       
+    # finally, mutate the parameter
     self.param_list[indx_to_change] = param_to_change
-
-
-    
-      
 
 
 
   def set_data(self, y_data:np.ndarray, x_data:np.ndarray = np.array([])):
+    '''
+    Sets y and x data to the creature. This function also calculates the 
+    fit function and chi-squared for the function and the data
+    '''
     if x_data.size == 0:
       x_data = np.arange(0, len(y_data), 1.)
     self.x_data = x_data
@@ -95,14 +108,28 @@ class Creature:
     self.y_uncertainties = np.sqrt(y_data)
     self.y_fit = self.fit_function(x_data)
 
+    self.degrees_of_freedom = len(y_data) - self.n_params
+
     self.chi_sq = self.calculate_chi_squared()
 
+
+
   def get_chi_sq(self):
-    return self.calculate_chi_squared()
+    # make sure the data has been set
+    if self.y_data.size == 0:
+      raise AttributeError("Data has not yet been set to this creature, so the chi-squared can not be calculated!")
+    
+    return self.chi_sq
+
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
-    raise NotImplementedError("The base creature has no fit function. Please use a derived creature like NormalCreature for example.")
+    '''
+    Each child creature class must provide a fit function for x.
+    This takes in an array for x values and returns an array
+    for the y fit.
+    '''
+    raise NotImplementedError("The base creature has no fit function. Please use a derived creature that has a valid fit function.")
     
   
 
@@ -111,7 +138,8 @@ class Creature:
     for i in range(len(self.x_data)):
       chi_sq += (self.y_data[i] - self.y_fit[i]) ** 2 / (self.y_uncertainties[i] ** 2)
 
-    return chi_sq / 3 # n_parameters minus 1 NOTE: This is only for the normal one.
+    return chi_sq / self.degrees_of_freedom
+
   
 
   def plot_fit(self):
