@@ -1,4 +1,5 @@
-# A derived creature with a normal distribution
+# Creatures derived from the base "creature" class
+#
 # each creature must implement the "fit_function" method
 # it's recommended that the creature redefine the "save_filename",
 # and for any initial parameter guesses, they can either put the initial
@@ -34,6 +35,7 @@ class LorentzianCreature(Creature):
   save_filename = "save_files/lorentzian_best_params.txt"
 
   def fit_function(self, x: np.ndarray) -> np.ndarray:
+    # to be implemented
     pass
 
 
@@ -41,7 +43,6 @@ class LorentzianCreature(Creature):
 class NormalCreature(Creature):
 
   save_filename = "save_files/normal_best_params.txt"
-
 
   def fit_function(self, _x:np.ndarray) -> np.ndarray:
     a = self.param_list[0]
