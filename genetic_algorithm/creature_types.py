@@ -12,6 +12,21 @@ class GammaArctanCreature(Creature):
 
   save_filename = "save_files/gamma_arctan_best_params.txt"
 
+  def fit_function(self, _x: np.ndarray) -> np.ndarray:
+    a = self.param_list[0]
+    b = self.param_list[1]
+    c = self.param_list[2]
+    d = self.param_list[3]
+    e = self.param_list[4]
+    f = self.param_list[5]
+    g = self.param_list[6]
+
+    # Add a small epsilon value to x to avoid division by zero
+    epsilon = 1e-10
+    x = _x + epsilon
+
+    return a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
+
   
 
 class LorentzianCreature(Creature):
@@ -28,7 +43,7 @@ class NormalCreature(Creature):
   save_filename = "save_files/normal_best_params.txt"
 
 
-  def fit_function(self, x:np.ndarray) -> np.ndarray:
+  def fit_function(self, _x:np.ndarray) -> np.ndarray:
     a = self.param_list[0]
     b = self.param_list[1]
     c = self.param_list[2]
@@ -36,7 +51,7 @@ class NormalCreature(Creature):
 
     # Add a small epsilon value to x to avoid division by zero
     epsilon = 1e-10
-    x += epsilon
+    x = _x + epsilon
 
     return a * np.exp(-.5*(x/c-b/c)**2) + d
   
@@ -47,7 +62,7 @@ class NormalCreature(Creature):
     # param list 0 is a scaling factor
     # param list 1 is the mean
     # param list 2 is the standard deviation
-    # param list 3 is the + c at the end
+    # param list 3 is the + constant at the end
     self.param_list[0] = 20000
     self.param_list[1] = 512
     self.param_list[2] = 1

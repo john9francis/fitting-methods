@@ -99,30 +99,7 @@ class Creature:
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
     raise NotImplementedError("The base creature has no fit function. Please use a derived creature like NormalCreature for example.")
-    '''
-    Takes in an array of x_values
-    The fit function is a gamma added to an arctan:
-    f(x) = a * x^(b-1)*exp(-x/c) + d*arctan(e*x+f) + g
-    Returns an array of the fit values
-    '''
-    a = self.param_list[0]
-    b = self.param_list[1]
-    c = self.param_list[2]
-    d = self.param_list[3]
-    e = self.param_list[4]
-    f = self.param_list[5]
-    g = self.param_list[6]
-
-    # Add a small epsilon value to x to avoid division by zero
-    epsilon = 1e-10
-    x += epsilon
-
-    if self.normal_dist:
-      fit = a * np.exp(-.5*(x/c-b/c)**2) + d
-    else:
-      fit = a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
     
-    return fit
   
 
   def calculate_chi_squared(self):
