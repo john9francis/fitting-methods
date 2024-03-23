@@ -4,6 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class Creature:
+  '''
+  A creature holds parameters for a fit function.
+  this creature can hold up to 7 parameters.
+  '''
 
   save_filename = "save_files/base_creature_save_file.txt"
 
@@ -42,8 +46,7 @@ class Creature:
     [a,b,c,d,e,f,g]
     and sets this creature's params to them
     '''
-    for i in range(len(self.param_list)):
-      self.param_list[i] = param_list[i]
+    self.param_list = np.copy(param_list)
 
 
   def get_params(self):
@@ -59,13 +62,16 @@ class Creature:
     Takes in an amount for how much to mutate a param, then
     changes one random param by either + or - that amount.
     '''
-    random_param = False
 
     if indx_to_change < 0:
       indx_to_change = self.rand.randint(0, len(self.param_list) - 1)
     param_to_change = self.param_list[indx_to_change]
 
     t_or_f = self.rand.randint(0, 1)
+
+    # Very small chance of a crazy huge mutation
+    if self.rand.uniform(0, 1) > .7:
+      amount += self.rand.uniform(0, 10000)
 
     if t_or_f == 0:
       param_to_change += amount
@@ -75,9 +81,7 @@ class Creature:
     self.param_list[indx_to_change] = param_to_change
 
 
-    # Very small chance of a crazy huge mutation
-    if self.rand.uniform(0, 1) > .7:
-      self.param_list[indx_to_change] = self.rand.uniform(-1000, 1000)
+    
       
 
 

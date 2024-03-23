@@ -86,7 +86,8 @@ class CreatureList:
     else:
       # just kill some random
       for i in range(len(self.creature_list ) // 10):
-        self.creature_list.pop(i)
+        if self.creature_list[i] != self.get_best_creature():
+          self.creature_list.pop(i)
 
 
   def repopulate_creatures(self):
