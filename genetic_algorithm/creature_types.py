@@ -26,7 +26,7 @@ class GammaArctanCreature(Creature):
     epsilon = 1e-10
     x = _x + epsilon
 
-    return a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g
+    return (a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g, 7)
 
   
 
@@ -34,7 +34,7 @@ class LorentzianCreature(Creature):
 
   save_filename = "save_files/lorentzian_best_params.txt"
 
-  def fit_function(self, x: np.ndarray) -> np.ndarray:
+  def fit_function(self, x: np.ndarray) -> tuple[np.ndarray, int]:
     # to be implemented
     pass
 
@@ -54,7 +54,7 @@ class NormalCreature(Creature):
     epsilon = 1e-10
     x = _x + epsilon
 
-    return a * np.exp(-.5*(x/c-b/c)**2) + d
+    return (a * np.exp(-.5*(x/c-b/c)**2) + d, 4)
   
 
   def set_random_params(self, min, max):

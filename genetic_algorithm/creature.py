@@ -106,7 +106,7 @@ class Creature:
     self.y_data = y_data
 
     self.y_uncertainties = np.sqrt(y_data)
-    self.y_fit = self.fit_function(x_data)
+    self.y_fit, self.n_params = self.fit_function(x_data)
 
     self.degrees_of_freedom = len(y_data) - self.n_params
 
@@ -123,11 +123,11 @@ class Creature:
 
 
 
-  def fit_function(self, x:np.ndarray) -> np.ndarray:
+  def fit_function(self, x:np.ndarray) -> tuple[np.ndarray, int]:
     '''
     Each child creature class must provide a fit function for x.
-    This takes in an array for x values and returns an array
-    for the y fit.
+    This takes in an array for x values and returns a tuple:
+    (array for the y fit, int for how many parameters used.)
     '''
     raise NotImplementedError("The base creature has no fit function. Please use a derived creature that has a valid fit function.")
     
