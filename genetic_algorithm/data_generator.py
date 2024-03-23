@@ -1,11 +1,12 @@
+# This class is specifically for reading the "copper data one" file.
+# Eventually it should be adjusted to be able to take in any data file 
+
 import pandas as pd
-from matplotlib import pyplot as plt
 import numpy as np
 
 class DataGenerator():
   def __init__(self) -> None:
       
-
     df = pd.read_csv("copper data one.csv", header=6)
 
     energy_col_name = " Energy (keV)"
