@@ -1,14 +1,14 @@
 from creature_list import CreatureList
 from data_generator import DataGenerator
-from creature_types import NormalCreature
+import creature_types as ctypes
 
 def main():
   # get data
   dg = DataGenerator()
   x_data, y_data = dg.get_data()
 
-  # get a creature and test the fit
-  cl = CreatureList(100, NormalCreature, x_data, y_data)
+  # Load some creatures and run a simulation
+  cl = CreatureList(100, ctypes.NormalCreature, x_data, y_data)
   cl.run(200)
 
 
