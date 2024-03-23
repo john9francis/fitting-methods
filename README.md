@@ -7,4 +7,4 @@ Demonstrations of several different methods for fitting data to a function. The 
 - [ ] Gradient search
 - [ ] Expansion
 - [ ] Simplex
-- [ ] Genetic Algorithm
+- [x] [Genetic Algorithm](genetic_algorithm/)
