@@ -1,11 +1,13 @@
 # A list to take care of mutating, deleting, etc. creatures.
 
-from creature import Creature
+from creature_types import Creature
 import numpy as np
 import random
 
 class CreatureList:
-  def __init__(self, how_many_creatures:int, x_data:np.ndarray, y_data:np.ndarray) -> None:
+  def __init__(self, how_many_creatures:int, creature_class:Creature, x_data:np.ndarray, y_data:np.ndarray) -> None:
+    self.type_of_creature = creature_class
+    
     self.creature_amount = how_many_creatures
     self.set_random_creatures(how_many_creatures)
 
@@ -18,11 +20,11 @@ class CreatureList:
 
     self.mutate_rate = 100
 
-    self.save_filename = "best_creature_params.txt"
-  
+    self.save_filename = creature_class.save_filename
+
 
   def set_random_creatures(self, amount):
-    self.creature_list = [Creature() for _ in range(amount)]
+    self.creature_list = [self.type_of_creature() for _ in range(amount)]
 
 
   def create_chi_sq_list(self):
@@ -103,7 +105,7 @@ class CreatureList:
       # get params from an existing creature
       params = self.rand.choice(self.creature_list).get_params()
 
-      c = Creature(params)
+      c = self.type_of_creature(params)
       c.mutate(self.rand.uniform(0, self.mutate_rate))
       new_creatures.append(c)
 
@@ -120,7 +122,7 @@ class CreatureList:
       return False
     
     params_list = list(params_array)
-    self.creature_list = [Creature(params_list) for _ in range(10)]
+    self.creature_list = [self.type_of_creature(params_list) for _ in range(10)]
     pass
 
 

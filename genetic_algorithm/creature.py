@@ -4,9 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class Creature:
-  def __init__(self, param_list:list = []) -> None:
 
-    self.normal_dist = True
+  save_filename = "save_files/base_creature_save_file.txt"
+
+  def __init__(self, param_list:list = []) -> None:
 
     self.rand = random.Random()
 
@@ -33,12 +34,6 @@ class Creature:
     for i in range(len(self.param_list)):
       self.param_list[i] = self.rand.uniform(min, max)
 
-    # set some guesses
-    if self.normal_dist:
-      self.param_list[0] = 20000
-      self.param_list[1] = 512
-      self.param_list[2] = 1
-      self.param_list[3] = 1
 
 
   def set_params(self, param_list):
@@ -103,6 +98,7 @@ class Creature:
 
 
   def fit_function(self, x:np.ndarray) -> np.ndarray:
+    raise NotImplementedError("The base creature has no fit function. Please use a derived creature like NormalCreature for example.")
     '''
     Takes in an array of x_values
     The fit function is a gamma added to an arctan:
