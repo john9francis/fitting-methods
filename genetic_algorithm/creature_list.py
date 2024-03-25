@@ -129,7 +129,7 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = self.type_of_creature(params)
-      c.mutate(self.rand.uniform(0, self.mutate_rate))
+      c.mutate()
       new_creatures.append(c)
 
     # add the new creatures in with the old

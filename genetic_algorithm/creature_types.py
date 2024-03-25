@@ -27,6 +27,8 @@ class GammaArctanCreature(Creature):
     x = _x + epsilon
 
     return (a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g, 7)
+  
+  # TODO: implement the initial guesses
 
   
 
@@ -55,7 +57,7 @@ class NormalCreature(Creature):
     x = _x + epsilon
 
     return (a * np.exp(-.5*(x/c-b/c)**2) + d, 4)
-  
+
 
   def set_random_params(self, min, max):
     # initial guesses.

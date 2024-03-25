@@ -64,8 +64,21 @@ class Creature:
     return copy.deepcopy(self.param_list)
   
 
+  def mutate(self):
+    '''
+    Adds to or subtracts from a random parameter following a normal
+    distribution N(0,5)
+    '''
+    
+    change_amount = np.random.normal(0, 5)
+    indx_to_change = np.random.randint(0, len(self.param_list) - 1)
 
-  def mutate(self, amount:float, indx_to_change=-1):
+    # mutate
+    self.param_list[indx_to_change] += change_amount
+  
+
+
+  def legacy___mutate(self, amount:float, indx_to_change=-1):
     '''
     Takes in an amount for how much to mutate a param, then
     changes one random param by either + or - that amount.
@@ -143,8 +156,12 @@ class Creature:
   
 
   def plot_fit(self):
-    plt.plot(self.x_data, self.y_data, label="original data")
-    plt.plot(self.x_data, self.y_fit, label="fit")
+
+    plt.style.use('seaborn-v0_8-bright')
+    plt.plot(self.x_data, self.y_data, label="Original Data")
+    plt.plot(self.x_data, self.y_fit, label="Fit")
+    plt.xlabel("Energy KeV")
+    plt.ylabel("Counts")
     plt.title("Curve fit")
     plt.legend()
 
