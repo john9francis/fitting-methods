@@ -4,6 +4,7 @@
 # it's recommended that the creature redefine the "save_filename",
 # and for any initial parameter guesses, they can either put the initial
 # guesses in the save file or in their own implementation of "set_initial_guesses."
+# NOTE: Creatures have a maximum of 7 parameters.
 
 import numpy as np
 

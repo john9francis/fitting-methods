@@ -34,3 +34,7 @@ The new idea is get the best 5 or 10 creatures, and switch some of their paramet
 3. Choose the best 10
 4. Don't affect the number one best, but the other 9, switch some of their parameters. For example switch the "a" parameter of creature 1 and creature 2
 5. Either repopulate from all 10 or just the best one.
+
+
+# Future work:
+- For now, the creature only takes in up to 7 parameters. There needs to be a way for the creature to be able to take in as many as needed.
