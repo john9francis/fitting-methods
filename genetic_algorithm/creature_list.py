@@ -109,6 +109,42 @@ class CreatureList:
       best_creatures.append(creature_list_copy.pop(c_indx))
 
     return best_creatures
+  
+
+
+  def mutate_parents(self):
+    '''
+    
+    '''
+    pass
+
+
+  def get_best_params(self, shuffle=True):
+    '''
+    Gets a list of lists of all the best params
+    '''
+    best_param_list = []
+
+    c_list = self.get_n_best_creatures(10)
+
+    for c in c_list:
+      best_param_list.append(c.get_params())
+
+    if shuffle:
+      # shuffles up only the entries in each column.
+      best_param_array = np.array(best_param_list)
+
+      for i in range(best_param_array.size[1]):
+        col = best_param_array[:, i]
+        np.random.shuffle(col)
+        best_param_array[:, i] = col
+
+      best_param_list = list(best_param_array)
+
+
+    return best_param_list
+
+
 
 
   def kill_creatures(self):
@@ -167,7 +203,8 @@ class CreatureList:
       params = self.rand.choice(self.creature_list).get_params()
 
       c = self.type_of_creature(params)
-      c.mutate()
+      if np.random.uniform(0, 1) > .2:
+        c.mutate()
       new_creatures.append(c)
 
     # add the new creatures in with the old
