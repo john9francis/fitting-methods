@@ -40,11 +40,25 @@ class Creature:
     self.chi_sq = 0
 
 
+  def set_initial_guesses(self):
+    '''
+    For the child classes to implement. This function gets 
+    automatically called if there are no initial guesses in a file.
+    The way to write this function is as follows:
+  
+    self.param_list[0] = <guess1>
+    self.param_list[1] = <guess2>
+    ...
+    '''
+    return None
 
 
   def set_random_params(self, min, max):
     for i in range(len(self.param_list)):
       self.param_list[i] = self.rand.uniform(min, max)
+
+    # set any guesses that 
+    self.set_initial_guesses()
 
 
 

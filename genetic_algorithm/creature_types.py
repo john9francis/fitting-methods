@@ -3,7 +3,7 @@
 # each creature must implement the "fit_function" method
 # it's recommended that the creature redefine the "save_filename",
 # and for any initial parameter guesses, they can either put the initial
-# guesses in the save file or in their own implementation of "set_random_params."
+# guesses in the save file or in their own implementation of "set_initial_guesses."
 
 import numpy as np
 
@@ -37,7 +37,7 @@ class MyCreature(Creature):
     return (my_function, n_parameters)
   
 
-  def set_random_params(self, min, max):
+  def set_initial_guesses(self):
     # Set your initial guesses here:
     self.param_list[0] = 20000
     self.param_list[1] = 512
@@ -69,7 +69,7 @@ class NormalArctanCreature(Creature):
   
 
   
-  def set_random_params(self, min, max):
+  def set_initial_guesses(self):
     # initial guesses.
     # Note: 
     # param list 0 is a scaling factor for the normal
@@ -141,7 +141,7 @@ class NormalCreature(Creature):
     return (a * np.exp(-.5*(x/c-b/c)**2) + d, 4)
 
 
-  def set_random_params(self, min, max):
+  def set_initial_guesses(self):
     # initial guesses.
     # Note: 
     # param list 0 is a scaling factor
