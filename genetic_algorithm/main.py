@@ -9,7 +9,12 @@ def main():
 
   # Load some creatures and run a simulation
   cl = CreatureList(100, ctypes.NormalArctanCreature, x_data, y_data)
-  cl.run(200)
+  cl.run(1)
+  cl.create_chi_sq_list()
+  best_cs = cl.get_n_best_creatures(5)
+  for i in best_cs:
+    print(i.get_chi_sq())
+  #cl.run(200)
 
 
 

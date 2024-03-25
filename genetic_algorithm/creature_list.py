@@ -3,6 +3,7 @@
 from creature_types import Creature
 import numpy as np
 import random
+import copy
 
 class CreatureList:
   def __init__(self, 
@@ -59,25 +60,55 @@ class CreatureList:
     return np.median(self.chi_squared_list)
   
 
-  def get_best_creature(self):
+  def legacy____get_best_creature(self, creature_list=None):
     '''
     Returns a reference to the creature with the
     lowest chi-squared value.
     '''
+
+    if creature_list == None:
+      creature_list = self.creature_list
+
     best_val = self.get_best_chi_squared()
 
-    for c in self.creature_list:
+    for c in creature_list:
       if c.get_chi_sq() == best_val:
         return c
       
     print("Best creature not found..?")
 
 
-  def get_n_best_creatures(self, n):
-    best_creatures = np.copy(self.creature_list)
+  def get_best_creature(self, creature_list=None):
+    '''
+    Returns the best creature
+    '''
+    if creature_list == None:
+      creature_list = self.creature_list
 
-    while len(best_creatures) > n - 1:
-      pass
+    best_chi_sq = 100000
+    best_creature = None
+
+    for creature in creature_list:
+      c_chi_sq = creature.get_chi_sq()
+      if c_chi_sq < best_chi_sq:
+        best_chi_sq = c_chi_sq
+        best_creature = creature
+
+    return best_creature
+
+
+
+  def get_n_best_creatures(self, n):
+    creature_list_copy = copy.deepcopy(self.creature_list)
+    best_creatures = []
+
+    for i in range(n):
+      c = self.get_best_creature(creature_list_copy)
+      c_indx = creature_list_copy.index(c)
+
+      best_creatures.append(creature_list_copy.pop(c_indx))
+
+    return best_creatures
 
 
   def kill_creatures(self):
