@@ -9,6 +9,45 @@ import numpy as np
 
 from creature import Creature
 
+# ======================================================
+# Create your own creature:
+# ======================================================
+
+class MyCreature(Creature):
+  
+  # put the filename where you want to save the best parameters
+  save_filename = "myfunction.txt"
+
+
+  # required: implement this fit function
+  def fit_function(self, x):
+    a = self.param_list[0]
+    b = self.param_list[1]
+    c = self.param_list[2]
+    d = self.param_list[3]
+    e = self.param_list[4]
+    f = self.param_list[5]
+    g = self.param_list[6]
+
+    # write function
+    my_function = a * x + b
+    n_parameters = 2
+
+    # return (function, how many params)
+    return (my_function, n_parameters)
+  
+
+  def set_random_params(self, min, max):
+    # Set your initial guesses here:
+    self.param_list[0] = 20000
+    self.param_list[1] = 512
+    self.param_list[2] = 1
+
+
+  # now, go to main.py and after CreatureList(... put in ctypes.MyCreature
+# =====================================================================
+
+
 class NormalArctanCreature(Creature):
 
   save_filename = "save_files/normal_arctan_best_params.txt"
