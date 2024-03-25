@@ -112,20 +112,14 @@ class CreatureList:
   
 
 
-  def mutate_parents(self):
-    '''
-    
-    '''
-    pass
-
-
   def get_best_params(self, shuffle=True):
     '''
     Gets a list of lists of all the best params
     '''
     best_param_list = []
 
-    c_list = self.get_n_best_creatures(10)
+    n = min([10, len(self.creature_list)])
+    c_list = self.get_n_best_creatures(n)
 
     for c in c_list:
       best_param_list.append(c.get_params())
@@ -154,7 +148,7 @@ class CreatureList:
     original_creature_amount = len(self.creature_list)
     
     # reset if the chi-squared is just too darn high
-    if self.get_best_chi_squared() > 1000:
+    if self.get_best_chi_squared() > 10000:
       self.creature_list = []
       return
     

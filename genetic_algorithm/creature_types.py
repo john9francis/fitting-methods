@@ -98,8 +98,11 @@ class GammaArctanCreature(Creature):
 
   def fit_function(self, _x: np.ndarray) -> np.ndarray:
     a = self.param_list[0]
-    b = self.param_list[1]
-    c = self.param_list[2]
+
+    # since I know the mean is 511 = alpha * beta:
+    alpha = self.param_list[1]
+    beta = 511 / alpha
+    #beta = self.param_list[2]
     d = self.param_list[3]
     e = self.param_list[4]
     f = self.param_list[5]
@@ -109,7 +112,7 @@ class GammaArctanCreature(Creature):
     epsilon = 1e-10
     x = _x + epsilon
 
-    return (a * x ** (b - 1) * np.exp( -x / c) + d * np.arctan(e * x + f) + g, 7)
+    return (a * x ** (alpha - 1) * np.exp( -x / beta) + d * np.arctan(e * x + f) + g, 7)
   
   # TODO: implement the initial guesses
 
