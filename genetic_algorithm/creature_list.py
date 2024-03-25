@@ -134,7 +134,7 @@ class CreatureList:
       # shuffles up only the entries in each column.
       best_param_array = np.array(best_param_list)
 
-      for i in range(best_param_array.size[1]):
+      for i in range(best_param_array.shape[1]):
         col = best_param_array[:, i]
         np.random.shuffle(col)
         best_param_array[:, i] = col
@@ -200,7 +200,7 @@ class CreatureList:
 
     for _ in range(new_creature_amount):
       # get params from an existing creature
-      params = self.rand.choice(self.creature_list).get_params()
+      params = random.choice(self.get_best_params())
 
       c = self.type_of_creature(params)
       if np.random.uniform(0, 1) > .2:
