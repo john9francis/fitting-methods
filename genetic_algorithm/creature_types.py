@@ -9,6 +9,49 @@ import numpy as np
 
 from creature import Creature
 
+class NormalArctanCreature(Creature):
+
+  save_filename = "save_files/normal_arctan_best_params.txt"
+
+  def fit_function(self, _x: np.ndarray) -> np.ndarray:
+    a = self.param_list[0]
+    b = self.param_list[1]
+    c = self.param_list[2]
+    d = self.param_list[3]
+    e = self.param_list[4]
+    f = self.param_list[5]
+    g = self.param_list[6]
+
+    # Add a small epsilon value to x to avoid division by zero
+    epsilon = 1e-10
+    x = _x + epsilon
+
+    return (a * np.exp(-.5*(x/c-b/c)**2) + d * np.arctan(e * x + f) + g , 7)
+  
+
+  
+  def set_random_params(self, min, max):
+    # initial guesses.
+    # Note: 
+    # param list 0 is a scaling factor for the normal
+    # param list 1 is the mean
+    # param list 2 is the standard deviation
+    self.param_list[0] = 20000
+    self.param_list[1] = 512
+    self.param_list[2] = 1
+    
+    # for the gamma
+    # d * np.arctan(e * x + f) + g 
+    self.param_list[3] = -40
+    self.param_list[4] = 1
+    self.param_list[5] = -511
+    self.param_list[6] = 210
+
+    pass
+
+
+
+
 class GammaArctanCreature(Creature):
 
   save_filename = "save_files/gamma_arctan_best_params.txt"

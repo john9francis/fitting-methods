@@ -73,6 +73,13 @@ class CreatureList:
     print("Best creature not found..?")
 
 
+  def get_n_best_creatures(self, n):
+    best_creatures = np.copy(self.creature_list)
+
+    while len(best_creatures) > n - 1:
+      pass
+
+
   def kill_creatures(self):
     '''
     Kills the creatures with the worst chi-squareds
