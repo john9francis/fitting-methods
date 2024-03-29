@@ -1,5 +1,16 @@
 # Genetic Algorithm Method
 
+# How to run
+On windows (should be pretty similar on other platforms)
+
+First, download the project zip file and extract it, then run this script inside the directory:
+```
+python -m venv venv
+.\venv\scripts\activate
+pip install -r requirements.txt
+python main.py
+```
+
 # Main Idea:
 
 We have creatures with attributes for the parameters of our function. (e.g.):
@@ -40,3 +51,4 @@ This method is great for getting a general idea of the parameters but it's very 
 
 # Future work:
 - For now, the creature only takes in up to 7 parameters. There needs to be a way for the creature to be able to take in as many as needed.
+- Add a CLI or GUI to the app so that you can decide what function to fit
