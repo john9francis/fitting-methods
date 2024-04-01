@@ -8,8 +8,8 @@ def main():
   x_data, y_data = dg.get_data()
 
   # Load some creatures and run a simulation
-  cl = CreatureList(100, ctypes.LorentzianArctanCreature, x_data, y_data)
-  cl.run(50)
+  cl = CreatureList(100, ctypes.Lorentz_Normal_Arctan_Creature, x_data, y_data)
+  cl.run(200)
 
 
 
