@@ -47,6 +47,67 @@ class MyCreature(Creature):
 
   # now, go to main.py and after CreatureList(... put in ctypes.MyCreature
 # =====================================================================
+    
+class LorentzianArctanCreature(Creature):
+  
+  # put the filename where you want to save the best parameters
+  save_filename = "save_files/lorentzian_arctan.txt"
+  
+  # required: implement this fit function
+  def fit_function(self, x: np.ndarray) -> np.ndarray:
+    a = self.param_list[0]
+    b = self.param_list[1]
+    c = self.param_list[2]
+    d = self.param_list[3]
+    e = self.param_list[4]
+    f = self.param_list[5]
+    g = self.param_list[6]
+  
+    # write function
+    my_function = (c * (1 / np.pi) * (.5 * a) / ((x - b) ** 2 + (.5 * a) ** 2) 
+                   + d * np.arctan(e * x + f) + g)
+    n_parameters = 7
+
+    # return (function, how many params)
+    return (my_function, n_parameters)
+  
+  def set_initial_guesses(self):
+    # Set your initial guesses here:
+    self.param_list[0] = 3
+    self.param_list[1] = 511
+    self.param_list[2] = 90000
+
+    # d * np.arctan(e * x + f) + g 
+    self.param_list[3] = -40
+    self.param_list[4] = 1
+    self.param_list[5] = -511
+    self.param_list[6] = 210
+
+
+
+class LorentzianCreature(Creature):
+  
+  # put the filename where you want to save the best parameters
+  save_filename = "save_files/lorentzian.txt"
+  
+  # required: implement this fit function
+  def fit_function(self, x: np.ndarray) -> np.ndarray:
+    a = self.param_list[0]
+    b = self.param_list[1]
+    c = self.param_list[2]
+  
+    # write function
+    my_function = c * (1 / np.pi) * (.5 * a) / ((x - b) ** 2 + (.5 * a) ** 2)
+    n_parameters = 3
+
+    # return (function, how many params)
+    return (my_function, n_parameters)
+  
+  def set_initial_guesses(self):
+    # Set your initial guesses here:
+    self.param_list[0] = 3
+    self.param_list[1] = 511
+    self.param_list[2] = 90000
 
 
 class NormalArctanCreature(Creature):
@@ -80,7 +141,7 @@ class NormalArctanCreature(Creature):
     self.param_list[1] = 512
     self.param_list[2] = 1
     
-    # for the gamma
+    # for the background
     # d * np.arctan(e * x + f) + g 
     self.param_list[3] = -40
     self.param_list[4] = 1
@@ -117,15 +178,6 @@ class GammaArctanCreature(Creature):
   # TODO: implement the initial guesses
 
   
-
-class LorentzianCreature(Creature):
-
-  save_filename = "save_files/lorentzian_best_params.txt"
-
-  def fit_function(self, x: np.ndarray) -> tuple[np.ndarray, int]:
-    # to be implemented
-    pass
-
 
 
 class NormalCreature(Creature):

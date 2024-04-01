@@ -16,11 +16,10 @@ class Creature:
     self.rand = random.Random()
 
     # parameters
-    # (a - g) is of length 7
-    self.param_list = [0, 0, 0, 0, 0, 0, 0]
+    self.n_params = 13
+    self.param_list = [0 for _ in range(self.n_params)]
 
     # Degrees of freedom = n_data points - n_params
-    self.n_params = len(param_list)
     self.degrees_of_freedom = 0
 
     # Either set the params or set them to be random
