@@ -83,7 +83,7 @@ class Creature:
     distribution N(0,5)
     '''
     
-    change_amount = np.random.normal(0, 5)
+    change_amount = np.random.uniform(-5, 5)
     indx_to_change = np.random.randint(0, len(self.param_list) - 1)
 
     # mutate
@@ -187,5 +187,11 @@ class Creature:
     print(f"e: {self.param_list[4]}")
     print(f"f: {self.param_list[5]}")
     print(f"g: {self.param_list[6]}")
+    print(f"h: {self.param_list[7]}")
+    print(f"i: {self.param_list[8]}")
+    print(f"j: {self.param_list[9]}")
+    print(f"k: {self.param_list[10]}")
+    print(f"l: {self.param_list[11]}")
+    print(f"m: {self.param_list[12]}")
 
     plt.show()
