@@ -58,24 +58,6 @@ class CreatureList:
   
   def get_median_chi_squared(self):
     return np.median(self.chi_squared_list)
-  
-
-  def legacy____get_best_creature(self, creature_list=None):
-    '''
-    Returns a reference to the creature with the
-    lowest chi-squared value.
-    '''
-
-    if creature_list == None:
-      creature_list = self.creature_list
-
-    best_val = self.get_best_chi_squared()
-
-    for c in creature_list:
-      if c.get_chi_sq() == best_val:
-        return c
-      
-    print("Best creature not found..?")
 
 
   def get_best_creature(self, creature_list=None):
