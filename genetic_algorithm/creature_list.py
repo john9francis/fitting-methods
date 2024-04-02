@@ -175,7 +175,7 @@ class CreatureList:
     new_creatures = []
 
     for _ in range(new_creature_amount):
-      # get params from an existing creature
+      # get params from an previous best params
       params = random.choice(self.get_best_params())
 
       c = self.type_of_creature(params)
