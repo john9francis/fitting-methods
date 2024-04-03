@@ -136,13 +136,13 @@ class CreatureList:
     
     # set a cutoff value and kill all creatures with
     # a chi-squared greater than this cutoff
-    cutoff = self.get_best_chi_squared() + 1
+    cutoff = self.get_best_chi_squared()
 
     i = 0
     while i < len(self.creature_list):
-      if self.creature_list[i].calculate_chi_squared() >= cutoff:
+      if self.creature_list[i].calculate_chi_squared() > cutoff:
         self.creature_list.pop(i)
-        # print("Removed a creature!")
+          # print("Removed a creature!")
       else:
         i += 1
 
