@@ -9,7 +9,7 @@ def main():
 
   # Load some creatures and run a simulation
   cl = CreatureList(100, ctypes.Lorentz_Normal_Arctan_Creature, x_data, y_data)
-  cl.run(200)
+  cl.run(100)
 
 
 

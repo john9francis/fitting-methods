@@ -142,7 +142,6 @@ class CreatureList:
     while i < len(self.creature_list):
       if self.creature_list[i].calculate_chi_squared() > cutoff:
         self.creature_list.pop(i)
-          # print("Removed a creature!")
       else:
         i += 1
 
@@ -228,6 +227,9 @@ class CreatureList:
 
     # counter variable
     how_many_same_chis = 0
+
+    # plot the before plot
+    self.get_best_creature().plot_fit()
 
     for _ in range(how_many_times):
 
