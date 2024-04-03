@@ -173,6 +173,7 @@ class Creature:
     plt.style.use('seaborn-v0_8-bright')
     plt.plot(self.x_data, self.y_data, label="Original Data")
     plt.plot(self.x_data, self.y_fit, label="Fit")
+    plt.yscale("log")
     plt.xlabel("Energy KeV")
     plt.ylabel("Counts")
     plt.title("Curve fit")
@@ -180,18 +181,8 @@ class Creature:
 
     print(f"The chi-squared value of this fit is: {self.chi_sq}.")
     print("Parameters:")
-    print(f"a: {self.param_list[0]}")
-    print(f"b: {self.param_list[1]}")
-    print(f"c: {self.param_list[2]}")
-    print(f"d: {self.param_list[3]}")
-    print(f"e: {self.param_list[4]}")
-    print(f"f: {self.param_list[5]}")
-    print(f"g: {self.param_list[6]}")
-    print(f"h: {self.param_list[7]}")
-    print(f"i: {self.param_list[8]}")
-    print(f"j: {self.param_list[9]}")
-    print(f"k: {self.param_list[10]}")
-    print(f"l: {self.param_list[11]}")
-    print(f"m: {self.param_list[12]}")
+    abc = "abcdefghijklmnopqrstuvwxyz"
+    for i in range(len(self.param_list)):
+      print(f"{abc[i]}: {self.param_list[i]}")
 
     plt.show()
